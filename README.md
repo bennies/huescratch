@@ -14,6 +14,8 @@ You'll need the offline version of scratch. To load this module hit shift while 
 This will show you a new option "Import experimental HTTP extension", click this and point to the "huescratch.s2e file.
 After this you can find the new hue blocks under the "More Blocks" section.
 
+![scratch_hue_example](scratch_hue_example.png)
+
 ## Build
 
 ### How to create a jar
