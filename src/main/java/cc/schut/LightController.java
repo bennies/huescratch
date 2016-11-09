@@ -1,6 +1,5 @@
 package cc.schut;
 
-import cc.schut.json.Auth;
 import cc.schut.json.AuthResponse;
 import cc.schut.json.Lights;
 import org.slf4j.Logger;
