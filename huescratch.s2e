@@ -2,8 +2,8 @@
   "extensionName": "Hue",
   "extensionPort": 7070,
   "blockSpecs": [
-    ["w", "turn light %m.lightIndex %m.light", "light", 1, "on"],
-    ["w", "set light %m.lightIndex brightness to %n", "bri", 1, 255]
+    [" ", "turn light %m.lightIndex %m.light", "light", 1, "on"],
+    [" ", "set light %m.lightIndex brightness to %n", "bri", 1, 255]
   ],
   "menus": {
     "lightIndex": [1, 2, 3, 4, 5, 6, 7, 8, 9, 10],

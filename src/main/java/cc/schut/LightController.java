@@ -68,8 +68,8 @@ public class LightController {
         return response;
     }
 
-    @RequestMapping("/light/{requestid}/{id}/{switch}")
-    public String switchLight(@PathVariable("requestid") int requestId, @PathVariable("id") int id, @PathVariable("switch") String sw) throws URISyntaxException {
+    @RequestMapping("/light/{id}/{switch}")
+    public String switchLight(@PathVariable("id") int id, @PathVariable("switch") String sw) throws URISyntaxException {
         RestTemplate restTemplate = new RestTemplate();
         URI uri = new URI(hueBridge + "api/"+ userId +"/lights/"+id+"/state");
         String state = sw.equalsIgnoreCase("on")?"true":"false";
@@ -77,8 +77,8 @@ public class LightController {
         return "light: "+id+" "+state;
     }
 
-    @RequestMapping("/bri/{requestid}/{id}/{bri}")
-    public String brightnessLight(@PathVariable("requestid") int requestId, @PathVariable("id") int id, @PathVariable("bri") int bri) throws URISyntaxException {
+    @RequestMapping("/bri/{id}/{bri}")
+    public String brightnessLight(@PathVariable("id") int id, @PathVariable("bri") int bri) throws URISyntaxException {
         RestTemplate restTemplate = new RestTemplate();
         URI uri = new URI(hueBridge + "api/"+ userId +"/lights/"+id+"/state");
         restTemplate.put(uri, "{\"bri\":" + bri + "}");
