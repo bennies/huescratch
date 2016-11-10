@@ -63,6 +63,7 @@ public class LightController {
 
         for(Map.Entry<String, Light> light: lights.allLights().entrySet()) {
             response += "light/"+light.getKey()+" "+(light.getValue().getState().getOn()?"on":"off")+"\n";
+            response += "bri/"+light.getKey()+" "+light.getValue().getState().getBri()+"\n";
         }
         return response;
     }
@@ -74,6 +75,14 @@ public class LightController {
         String state = sw.equalsIgnoreCase("on")?"true":"false";
         restTemplate.put(uri, "{\"on\":" + state + "}");
         return "light: "+id+" "+state;
+    }
+
+    @RequestMapping("/bri/{requestid}/{id}/{bri}")
+    public String brightnessLight(@PathVariable("requestid") int requestId, @PathVariable("id") int id, @PathVariable("bri") int bri) throws URISyntaxException {
+        RestTemplate restTemplate = new RestTemplate();
+        URI uri = new URI(hueBridge + "api/"+ userId +"/lights/"+id+"/state");
+        restTemplate.put(uri, "{\"bri\":" + bri + "}");
+        return "light: "+id+" "+bri;
     }
 
     @RequestMapping("/reset_all")
