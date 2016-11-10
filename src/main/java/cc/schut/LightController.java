@@ -6,6 +6,7 @@ import cc.schut.json.Light;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.core.ParameterizedTypeReference;
 import org.springframework.http.*;
 import org.springframework.retry.annotation.Backoff;
@@ -50,6 +51,7 @@ public class LightController {
     }
 
     @RequestMapping("/poll")
+    @Cacheable(CacheConfig.CACHE_CONF) // scratch is polling 30x per sec. that's way to many rest calls to the bridge. so caching.
     public String poll() throws URISyntaxException {
         String response = "";
         RestTemplate restTemplate = new RestTemplate();
