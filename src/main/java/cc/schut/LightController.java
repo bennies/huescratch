@@ -2,6 +2,7 @@ package cc.schut;
 
 import cc.schut.json.AuthResponse;
 import cc.schut.json.Lights;
+import cc.schut.json.Light;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.annotation.Value;
@@ -25,7 +26,6 @@ import java.net.URISyntaxException;
 import java.util.List;
 import java.util.Map;
 import java.util.Properties;
-import java.util.Set;
 
 @RestController
 @EnableRetry
@@ -54,14 +54,15 @@ public class LightController {
         String response = "";
         RestTemplate restTemplate = new RestTemplate();
         URI uri = new URI(hueBridge + "api/"+ userId +"/lights/");
-        ResponseEntity<Lights> result = restTemplate.getForEntity(uri, Lights.class);
 
-        Set<Map.Entry<String, Object>> lights = result.getBody().any().entrySet();
-        for(Map.Entry<String, Object> light: lights) {
-            Map lightParams = (Map<String, Object>)light.getValue();
-            Map stateParams = (Map<String, Object>)lightParams.get("state");
-            Boolean state = (Boolean)stateParams.get("on");
-            response += "light/"+light.getKey()+" "+(state?"on":"off")+"\n";
+        ResponseEntity<Lights> lightResponse =
+                restTemplate.exchange(uri,
+                        HttpMethod.GET, null, new ParameterizedTypeReference<Lights>() {
+                        });
+        Lights lights = lightResponse.getBody();
+
+        for(Map.Entry<String, Light> light: lights.allLights().entrySet()) {
+            response += "light/"+light.getKey()+" "+(light.getValue().getState().getOn()?"on":"off")+"\n";
         }
         return response;
     }
@@ -79,6 +80,7 @@ public class LightController {
     @Retryable(maxAttempts=500, backoff=@Backoff(delay=100, maxDelay=500))
     public void resetAll() throws URISyntaxException {
         if (hueBridge.length()==0) {
+            // @TODO look at autodiscovery for the bridge.
             log.error("hue.bridge property isn't set!, add it to a application.properties file.");
             System.exit(-1);
         } else if (userId.length()==0) {
