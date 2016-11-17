@@ -1,9 +1,18 @@
 # Play with the lights (Hue) using scratch.
 
 ## Using it
-When starting you can already have a application.properties file pointing to the bridge or add it on the commandline like this:
+
+When it starts it will try to discover the bridge automatically and will request a userid from the bridge (You'll need to push that
+large button on the bridge). So normally this would be fine:
+
 ```
-java -jar target/HueScratch-0.0.1.jar --hue.bridge="http://192.168.20.114/"
+java -Xmx64m -jar target/HueScratch-0.0.1.jar
+```
+
+You can however start with an application.properties file pointing to the bridge or add it on the commandline like this:
+
+```
+java -Xmx64m -jar target/HueScratch-0.0.1.jar --hue.bridge="http://192.168.20.114/"
 ```
 It will try and connect to the bridge, on success will try and get a userid (require you to push the big button on the bridge)
 , on success write both settings to an application.properties file so next time you run it you won't need to go through
